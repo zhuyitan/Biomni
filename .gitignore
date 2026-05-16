@@ -103,7 +103,9 @@ coverage.xml
 .pytest_cache/
 cover/
 test.ipynb
-/test/
+/test/result/
+/test/save_folder/
+
 
 # Translations
 *.mo
