@@ -1,0 +1,291 @@
+🎓 Academic mode: Using all datasets (including non-commercial)
+
+==================================================
+🔧 BIOMNI CONFIGURATION
+==================================================
+📋 DEFAULT CONFIG (Including Database LLM):
+  Path: ./data
+  Timeout Seconds: 600
+  Llm: claude-sonnet-4-5
+  Temperature: 0.7
+  Use Tool Retriever: True
+  Commercial Mode: Academic (all datasets)
+
+🤖 AGENT LLM (Constructor Override):
+  LLM Model: gpt54
+  Source: Custom
+  Base URL: https://apps.inside.anl.gov/argoapi/v1
+  API Key: ********.zhu
+==================================================
+
+Checking and downloading missing data lake files...
+Using prompt-based retrieval with the agent's LLM
+================================ Human Message =================================
+
+Plan a CRISPR screen to identify genes that regulate T cell exhaustion, generate 32 genes that maximize the perturbation effect.
+================================== Ai Message ==================================
+
+<solution>
+Reasoning:
+You want a practical CRISPR screen design for discovering regulators of T cell exhaustion, plus a prioritized set of 32 genes likely to maximize perturbation effect. The best strategy is a focused pooled loss-of-function screen in chronically stimulated primary human CD8 T cells, enriched for transcriptional, epigenetic, checkpoint, signaling, metabolic, and chromatin regulators with known or plausible large effects on exhaustion state transitions.
+
+Plan:
+1. [ ] Define the biological model, screening objective, and readout for T cell exhaustion.
+2. [ ] Choose the CRISPR modality, screening format, and selection strategy.
+3. [ ] Select 32 high-impact genes spanning complementary exhaustion-regulating pathways.
+4. [ ] Design sgRNA library structure, controls, and experimental workflow.
+5. [ ] Define analysis, validation, and expected outcomes.
+
+1. [✓] Define the biological model, screening objective, and readout for T cell exhaustion. (completed)
+2. [ ] Choose the CRISPR modality, screening format, and selection strategy.
+3. [ ] Select 32 high-impact genes spanning complementary exhaustion-regulating pathways.
+4. [ ] Design sgRNA library structure, controls, and experimental workflow.
+5. [ ] Define analysis, validation, and expected outcomes.
+
+Step 1 result:
+Biological objective:
+Identify genes whose perturbation either suppresses or enhances exhaustion in chronically stimulated T cells.
+
+Recommended model:
+Primary human CD8+ T cells from 3–5 healthy donors.
+
+Exhaustion induction:
+Repeated anti-CD3/anti-CD28 stimulation or chronic antigen exposure using engineered target cells.
+
+Primary screen phenotype:
+Sort on exhaustion-associated surface phenotype and functional output:
+- High exhaustion: PD-1, TIM-3, LAG-3, TOX, CD39
+- Preserved function: IL-2, IFNγ, TNF, Ki67, granzyme B
+
+Best screening logic:
+Use pooled CRISPR knockout and FACS-based enrichment for:
+- Exhaustion-resistant cells: low PD-1/TIM-3/CD39 and high cytokine/proliferation
+- Exhaustion-prone cells: high PD-1/TIM-3/CD39 and low function
+
+Updated plan:
+1. [✓] Define the biological model, screening objective, and readout for T cell exhaustion. (completed)
+2. [✓] Choose the CRISPR modality, screening format, and selection strategy. (completed)
+3. [ ] Select 32 high-impact genes spanning complementary exhaustion-regulating pathways.
+4. [ ] Design sgRNA library structure, controls, and experimental workflow.
+5. [ ] Define analysis, validation, and expected outcomes.
+
+Step 2 result:
+Recommended CRISPR modality:
+CRISPR-Cas9 knockout, not CRISPRi/a, for maximum perturbation effect.
+
+Recommended format:
+Focused pooled screen.
+
+Why:
+- Larger effect sizes than genome-wide pilot in primary T cells
+- Better coverage per gene
+- Easier donor replication
+- Compatible with deep validation
+
+Editing strategy:
+- Deliver Cas9 as RNP or use Cas9-expressing T cells
+- Transduce sgRNA library by lentivirus at low MOI (~0.3)
+- Maintain >500–1000 cells per sgRNA throughout
+
+Selection/readout:
+Two complementary arms:
+1. Surface-marker arm: FACS sort exhaustion-high vs exhaustion-low
+2. Function arm: restimulate and sort IFNγ/TNF/IL-2 high vs low
+
+Optional:
+Pair with Perturb-seq or targeted single-cell readout in validation phase.
+
+Updated plan:
+1. [✓] Define the biological model, screening objective, and readout for T cell exhaustion. (completed)
+2. [✓] Choose the CRISPR modality, screening format, and selection strategy. (completed)
+3. [✓] Select 32 high-impact genes spanning complementary exhaustion-regulating pathways. (completed)
+4. [ ] Design sgRNA library structure, controls, and experimental workflow.
+5. [ ] Define analysis, validation, and expected outcomes.
+
+Step 3 result:
+Prioritized 32-gene panel maximizing perturbation effect
+
+Core exhaustion TF / fate regulators
+1. TOX
+2. TOX2
+3. NR4A1
+4. NR4A2
+5. NR4A3
+6. BATF
+7. IRF4
+8. PRDM1
+9. MAF
+10. EOMES
+11. TCF7
+12. NFATC1
+
+Checkpoint / inhibitory signaling
+13. PDCD1
+14. HAVCR2
+15. LAG3
+16. TIGIT
+17. CBLB
+18. SOCS1
+
+TCR / phosphatase / signaling brakes
+19. DGKA
+20. DGKZ
+21. PTPN2
+22. PTPN22
+23. CISH
+24. RASA2
+
+Chromatin / epigenetic regulators
+25. EZH2
+26. DNMT3A
+27. TET2
+28. SATB1
+
+Metabolic / stress adaptation
+29. HIF1A
+30. PRKAA1
+31. VHL
+32. FLCN
+
+Why these 32 maximize perturbation effect:
+- Includes master-state regulators with strong exhaustion phenotypes: TOX, NR4As, BATF, IRF4
+- Includes signaling brakes that often produce large gain-of-function-like persistence when knocked out: CBLB, SOCS1, CISH, PTPN2, RASA2, DGKs
+- Includes epigenetic state stabilizers likely to rewire durable exhaustion programs: DNMT3A, EZH2, TET2, SATB1
+- Includes metabolic gatekeepers affecting chronic stimulation fitness: HIF1A, PRKAA1, VHL, FLCN
+- Includes both canonical exhaustion markers and upstream drivers, allowing discovery of causal and phenotypic regulators
+
+Highest-priority “expected large-effect” subset within the 32:
+TOX, NR4A1, NR4A2, NR4A3, BATF, IRF4, CBLB, SOCS1, CISH, PTPN2, RASA2, DGKA, DGKZ, DNMT3A, TCF7, NFATC1
+
+Updated plan:
+1. [✓] Define the biological model, screening objective, and readout for T cell exhaustion. (completed)
+2. [✓] Choose the CRISPR modality, screening format, and selection strategy. (completed)
+3. [✓] Select 32 high-impact genes spanning complementary exhaustion-regulating pathways. (completed)
+4. [✓] Design sgRNA library structure, controls, and experimental workflow. (completed)
+5. [ ] Define analysis, validation, and expected outcomes.
+
+Step 4 result:
+Recommended sgRNA library design:
+- 6 sgRNAs per gene x 32 genes = 192 sgRNAs
+- Add 20 non-targeting controls
+- Add 10–20 positive controls for T cell fitness / activation / essentiality
+- Total library size: ~230–240 guides
+
+Suggested positive-control genes:
+- Essential/dropout: RPA3, PCNA, POLR2D
+- Activation/function controls: ZAP70, LCK, LAT, IL2RA, IFNG
+- Exhaustion reference controls: TOX, NR4A1, CBLB, SOCS1
+
+Experimental workflow:
+1. Isolate human CD8 T cells
+2. Activate 24–48 h
+3. Introduce Cas9/sgRNA
+4. Expand edited cells
+5. Apply chronic stimulation for 10–14 days
+6. Sample baseline aliquot for guide representation
+7. FACS-sort:
+   - Exhaustion-low: PD-1low TIM-3low CD39low
+   - Exhaustion-high: PD-1high TIM-3high CD39high
+8. In parallel, restimulate and sort cytokine-high vs cytokine-low
+9. Sequence sgRNA cassettes from sorted bins
+10. Compute enrichment/depletion per gene
+
+Recommended gating markers:
+- Viability dye
+- CD3, CD8
+- PD-1, TIM-3, LAG-3, CD39
+- Optional: TCF1, TOX, Ki67
+- Functional arm: intracellular IFNγ, TNF, IL-2
+
+Key design parameters:
+- MOI: 0.2–0.3
+- Coverage: >500 cells/sgRNA minimum, ideally 1000
+- Replicates: at least 3 biological donors
+- Timepoints: day 0, day 7, day 10–14
+
+Updated plan:
+1. [✓] Define the biological model, screening objective, and readout for T cell exhaustion. (completed)
+2. [✓] Choose the CRISPR modality, screening format, and selection strategy. (completed)
+3. [✓] Select 32 high-impact genes spanning complementary exhaustion-regulating pathways. (completed)
+4. [✓] Design sgRNA library structure, controls, and experimental workflow. (completed)
+5. [✓] Define analysis, validation, and expected outcomes. (completed)
+
+Step 5 result:
+Analysis plan:
+- Use MAGeCK or equivalent for sgRNA enrichment/depletion
+- Compare:
+  1. exhaustion-low vs baseline
+  2. exhaustion-high vs baseline
+  3. cytokine-high vs cytokine-low
+- Aggregate by gene across donors
+- Prioritize genes with:
+  - concordant sgRNAs
+  - reproducible donor effects
+  - improved function without severe proliferation loss
+
+Expected hit classes:
+- Knockout reduces exhaustion / improves persistence:
+  TOX, NR4A family, CBLB, SOCS1, CISH, PTPN2, RASA2, DGKA, DGKZ
+- Knockout may worsen exhaustion or reduce progenitor-like state:
+  TCF7, SATB1, possibly TET2 or PRKAA1 depending on context
+- Mixed/context-dependent:
+  BATF, IRF4, EOMES, EZH2, HIF1A, VHL, FLCN
+
+Validation phase:
+- Arrayed knockout of top 8–12 hits
+- Confirm editing efficiency
+- Measure:
+  - PD-1/TIM-3/LAG-3/CD39
+  - IFNγ/TNF/IL-2
+  - proliferation and survival
+  - serial killing if using CAR/TCR model
+- Optional in vivo validation in tumor coculture or xenograft model
+
+Final recommended 32 genes:
+1. TOX
+2. TOX2
+3. NR4A1
+4. NR4A2
+5. NR4A3
+6. BATF
+7. IRF4
+8. PRDM1
+9. MAF
+10. EOMES
+11. TCF7
+12. NFATC1
+13. PDCD1
+14. HAVCR2
+15. LAG3
+16. TIGIT
+17. CBLB
+18. SOCS1
+19. DGKA
+20. DGKZ
+21. PTPN2
+22. PTPN22
+23. CISH
+24. RASA2
+25. EZH2
+26. DNMT3A
+27. TET2
+28. SATB1
+29. HIF1A
+30. PRKAA1
+31. VHL
+32. FLCN
+
+Recommended top 10 if you want the strongest first-pass screen:
+TOX, NR4A1, NR4A2, NR4A3, CBLB, SOCS1, CISH, PTPN2, RASA2, DGKA
+
+Concise screen blueprint:
+- System: primary human CD8 T cells, chronic stimulation
+- Modality: pooled CRISPR knockout
+- Library: 32 genes, 6 guides/gene, ~240 total guides with controls
+- Readout: FACS sort by exhaustion markers and cytokine output
+- Replication: 3–5 donors
+- Goal: identify perturbations that preserve function and prevent terminal exhaustion
+
+If you want, I can next turn this into a ready-to-order sgRNA library table with 6 guide slots per gene, controls, plate layout, and a week-by-week experimental timeline.
+</solution>
+
