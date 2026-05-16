@@ -2966,18 +2966,12 @@ Each library is listed with its description to help you understand its functiona
                     with gr.Column(scale=1):
                         main_chatbot = gr.Chatbot(
                             label="Biomni A1 Agent",
-                            type="messages",
                             height=800,
-                            show_copy_button=True,
-                            show_share_button=True,
                         )
                     with gr.Column(scale=1):
                         innerloop_chatbot = gr.Chatbot(
                             label="Biomni Executor",
-                            type="messages",
                             height=800,
-                            show_copy_button=True,
-                            show_share_button=True,
                         )
 
                 with gr.Row():
