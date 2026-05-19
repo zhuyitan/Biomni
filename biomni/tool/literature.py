@@ -242,11 +242,13 @@ def advanced_web_search_claude(
 
     import anthropic
 
+    base_url = None
     try:
         from biomni.config import default_config
 
         model = default_config.llm
         api_key = default_config.api_key
+        base_url = default_config.base_url
         if not api_key:
             api_key = os.getenv("ANTHROPIC_API_KEY")
     except ImportError:
@@ -259,7 +261,10 @@ def advanced_web_search_claude(
     if not api_key:
         raise ValueError("Set your api_key explicitly.")
 
-    client = anthropic.Anthropic(api_key=api_key)
+    client_kwargs = {"api_key": api_key}
+    if base_url:
+        client_kwargs["base_url"] = base_url
+    client = anthropic.Anthropic(**client_kwargs)
     tool_def = {
         "type": "web_search_20250305",
         "name": "web_search",
