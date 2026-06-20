@@ -9,18 +9,15 @@ from biomni.config import default_config
 ARGO_BASE_URL = "https://apps.inside.anl.gov/argoapi/v1"
 ARGO_USER = os.environ.get("ARGO_USER", "yitan.zhu")
 
-# Argo's Anthropic-compatible Messages API root. The Anthropic Python SDK
-# appends "/v1/messages", so we point base_url at "/argoapi" (not "/argoapi/v1")
-# so requests land on https://apps.inside.anl.gov/argoapi/v1/messages.
-ARGO_ANTHROPIC_BASE_URL = "https://apps.inside.anl.gov/argoapi"
-
-# Route biomni.tool.literature.advanced_web_search_claude through Argo instead
-# of api.anthropic.com. That function reads default_config (not A1 args), so we
-# set it here. The A1 agent below still uses gpt54 because it reads its own
-# constructor args first.
-default_config.llm = "claudeopus47"
+# Route tools that read default_config (literature + database helpers) through
+# Argo's OpenAI-compatible endpoint. biomni.llm.get_llm sees a non-"claude-"
+# prefix on names like "claudesonnet47" and a base_url, so it picks the
+# "Custom" branch — a ChatOpenAI client that POSTs to {base_url}/chat/completions.
+# That requires the /v1 suffix; without it the URL is /argoapi/chat/completions
+# and Argo returns 404. The A1 agent still uses gpt54 from its own ctor args.
+default_config.llm = "claudesonnet46"  # valid Argo Claude IDs: claudesonnet46, claudeopus47, claudehaiku45 (no claudesonnet47)
 default_config.api_key = ARGO_USER
-default_config.base_url = ARGO_ANTHROPIC_BASE_URL
+default_config.base_url = ARGO_BASE_URL
 
 # Argo model name for GPT-4o is "gpt4o" (see Argo API docs for full model list)
 # agent = A1(

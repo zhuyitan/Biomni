@@ -1,0 +1,15 @@
+{
+  "effector": "Ionizing radiation",
+  "target": "ATM kinase",
+  "mechanism_description": "activates",
+  "outcome": "ATM kinase phosphorylation levels",
+  "test_type": {
+    "observation_manipulation": "observation",
+    "type": "association"
+  },
+  "investigation_context": {
+    "case_population": "lung cancer patients exposed to ionizing radiation",
+    "control_population": "lung cancer patients not exposed to ionizing radiation",
+    "data_type": "gene expression"
+  }
+}

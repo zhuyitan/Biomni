@@ -1,0 +1,15 @@
+{
+  "effector": "ATM kinase",
+  "target": "CHK2",
+  "mechanism_description": "phosphorylates and activates",
+  "outcome": "Increased levels of phosphorylated CHK2",
+  "test_type": {
+    "observation_manipulation": "observation",
+    "type": "association"
+  },
+  "investigation_context": {
+    "case_population": "lung cancer patients with ATM kinase overexpression",
+    "control_population": "lung cancer patients without ATM kinase overexpression",
+    "data_type": "gene expression"
+  }
+}

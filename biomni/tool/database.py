@@ -63,7 +63,7 @@ def _query_llm_for_api(prompt, schema, system_template):
         # Format the system prompt with schema if provided
         if schema is not None:
             schema_json = json.dumps(schema, indent=2)
-            system_prompt = system_template.format(schema=schema_json)
+            system_prompt = system_template.replace("{schema}", schema_json)
         else:
             system_prompt = system_template
 

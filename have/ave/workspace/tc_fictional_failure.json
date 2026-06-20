@@ -1,0 +1,15 @@
+{
+  "effector": "Phantazium-7 nanoparticle",
+  "target": "ZQX-9 receptor",
+  "mechanism_description": "quantum-binds to",
+  "outcome": "ZQX-9 conformational shift to triplet state",
+  "test_type": {
+    "observation_manipulation": "manipulation",
+    "type": "association"
+  },
+  "investigation_context": {
+    "case_population": "Martian-derived xenosomatic organoids treated with Phantazium-7",
+    "control_population": "untreated Martian-derived xenosomatic organoids",
+    "data_type": "cryo-quantum tomography"
+  }
+}

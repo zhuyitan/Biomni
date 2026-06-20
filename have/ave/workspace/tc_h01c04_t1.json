@@ -1,0 +1,15 @@
+{
+  "effector": "Phosphorylated CDC25A",
+  "target": "CDC25A",
+  "mechanism_description": "is degraded",
+  "outcome": "cell cycle arrest",
+  "test_type": {
+    "observation_manipulation": "observation",
+    "type": "association"
+  },
+  "investigation_context": {
+    "case_population": "lung cancer patients with phosphorylated CDC25A",
+    "control_population": "lung cancer patients without phosphorylated CDC25A",
+    "data_type": "gene expression"
+  }
+}

@@ -38,8 +38,14 @@ def run_r_code(code: str) -> str:
             f.write(code)
             temp_file = f.name
 
-        # Run the R code using Rscript
-        result = subprocess.run(["Rscript", temp_file], capture_output=True, text=True, check=False)
+        # Prefer the Rscript in the active Python env (e.g. conda's biomni_e1)
+        # so R packages installed there (TCGAbiolinks, DESeq2, etc.) are
+        # discoverable. PATH-based "Rscript" can resolve to /usr/bin/Rscript
+        # when the env wasn't activated, which uses a different R library.
+        import sys
+        env_rscript = os.path.join(sys.prefix, "bin", "Rscript")
+        rscript_bin = env_rscript if os.path.exists(env_rscript) else "Rscript"
+        result = subprocess.run([rscript_bin, temp_file], capture_output=True, text=True, check=False)
 
         # Clean up the temporary file
         os.unlink(temp_file)

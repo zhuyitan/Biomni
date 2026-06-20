@@ -1,0 +1,14 @@
+{
+  "effector": "CHK2",
+  "target": "CDC25A",
+  "mechanism_description": "phosphorylates",
+  "outcome": "CDC25A is phosphorylated",
+  "test_type": {
+    "observation_manipulation": "observation",
+    "type": "correlation"
+  },
+  "investigation_context": {
+    "population": "lung cancer patients",
+    "data_type": "gene expression"
+  }
+}

@@ -39,7 +39,7 @@ dataset
 logs
 scripts/gradio
 data_lake
-__pycache__/
+__pycache__
 *.py[cod]
 *$py.class
 res/
@@ -105,6 +105,13 @@ cover/
 test.ipynb
 /test/result/
 /test/save_folder/
+/test/argo_api_documentation.pdf
+/test/data_test_cases/
+/test/data/
+/test/hypotheses.txt
+/have/data/tcga/data
+/have/ave/workspace/*.csv
+
 
 
 # Translations
