@@ -1,0 +1,15 @@
+{
+  "effector": "high PTEN gene expression",
+  "target": "MYC copy number",
+  "mechanism_description": "increase",
+  "outcome": "increased MYC copy number",
+  "test_type": {
+    "observation_manipulation": "observation",
+    "type": "association"
+  },
+  "investigation_context": {
+    "case_population": "lung cancer patients with high PTEN gene expression",
+    "control_population": "lung cancer patients with low PTEN gene expression",
+    "data_type": "gene expression, copy number"
+  }
+}

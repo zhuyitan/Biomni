@@ -1,0 +1,14 @@
+{
+  "effector": "APOE",
+  "target": "TYROBP",
+  "mechanism_description": "upregulates",
+  "outcome": "increased expression level of TYROBP",
+  "test_type": {
+    "observation_manipulation": "observation",
+    "type": "correlation"
+  },
+  "investigation_context": {
+    "population": "patients with Alzheimer's disease",
+    "data_type": "gene expression"
+  }
+}

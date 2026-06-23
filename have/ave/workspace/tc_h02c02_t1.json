@@ -1,0 +1,14 @@
+{
+  "effector": "TCF7L2",
+  "target": "KCNJ11",
+  "mechanism_description": "induce",
+  "outcome": "increased KCNJ11 expression",
+  "test_type": {
+    "observation_manipulation": "observation",
+    "type": "correlation"
+  },
+  "investigation_context": {
+    "population": "patients with type 2 diabetes",
+    "data_type": "gene expression"
+  }
+}

@@ -133,6 +133,9 @@ def inspect_file(path: Path, head_rows: int = 5) -> str:
 
 def call_biomni_query(module: str, function_name: str, kwargs: dict[str, Any]) -> str:
     """Call an allow-listed Biomni query function and return its result as text."""
+    
+    print(f"Calling Biomni query: {module}.{function_name} with {kwargs}")
+    
     allowed = ALLOWED_BIOMNI_QUERIES.get(module)
     if allowed is None:
         return (
@@ -201,3 +204,46 @@ def search_libraries(
         if q in name.lower() or q in desc.lower():
             out.append({"name": name, "description": desc})
     return out
+
+
+def download_geo_series(gse_id: str, workspace) -> dict:
+    """Download a GEO series and write expression + metadata CSVs to workspace.
+
+    Default fast path for GEO retrieval. Returns a dict with file paths and
+    shape info, or {'error': ...} on failure. The agent should fall back to
+    writing custom GEOparse code via run_python_for_data_prep if this returns
+    an error or a shape that isn't usable for the requested analysis.
+    """
+    import GEOparse
+
+    workspace = Path(workspace)
+    try:
+        gse = GEOparse.get_GEO(gse_id, destdir=str(workspace), silent=True)
+    except Exception as e:
+        return {"error": f"GEOparse.get_GEO({gse_id!r}) failed: {type(e).__name__}: {e}"}
+
+    try:
+        expr = gse.pivot_samples("VALUE")
+    except Exception as e:
+        return {
+            "error": (
+                f"Could not pivot VALUE column for {gse_id}: {type(e).__name__}: {e}. "
+                "The series may use a non-VALUE column or unusual sample format; "
+                "fall back to run_python_for_data_prep with custom GEOparse code."
+            )
+        }
+
+    meta = gse.phenotype_data
+    expr_path = workspace / f"prepared_{gse_id}_expression.csv"
+    meta_path = workspace / f"prepared_{gse_id}_metadata.csv"
+    expr.to_csv(expr_path)
+    meta.to_csv(meta_path)
+
+    return {
+        "expression_file": str(expr_path),
+        "metadata_file": str(meta_path),
+        "n_features_x_n_samples": list(expr.shape),
+        "sample_metadata_columns": list(meta.columns)[:20],
+        "gse_title": (gse.metadata.get("title") or [""])[0],
+        "platform_ids": list(gse.gpls.keys()),
+    }

@@ -71,6 +71,12 @@ def main() -> int:
     print(output.model_dump_json(indent=2))
     print()
 
+    # Persist convertor output (works for both ok and insufficient_data).
+    result_path = test_case_path.with_suffix(".result.json")
+    result_path.write_text(output.model_dump_json(indent=2))
+    print(f"Saved convertor result to: {result_path}")
+    print()
+
     if output.status != "ok":
         print("=" * 80)
         print("NO ANALYSIS CASE GENERATED")

@@ -40,11 +40,28 @@ WORKFLOW (follow in order, stop as soon as you have prepared data):
        - write the prepared output to `<workspace>/prepared_<short_id>.<ext>`
          (parquet or csv preferred). PRINT the absolute output path so you can
          reference it.
-  4. If no local match exists, call `query_biomni_database` (e.g., query_geo for
-     GEO accession listings). Then use `run_python_for_data_prep` to download
-     and prepare the data into the workspace.
-  5. If after both local and online attempts you cannot assemble suitable data,
-     return DataNotFound with a clear reason and a list of what you tried.
+  4. If no local match exists:
+     a. Call `query_biomni_database("database", "query_geo", {...})` to get
+        GEO accession candidates. When querying GEO, do NOT include gene
+        names/symbols in the query — search by disease, tissue, study type,
+        organism, sample size, etc.
+     b. Pick the most promising GSE based on titles and sample counts.
+     c. DEFAULT path: call `download_geo_series_tool(gse_id)`. It downloads
+        and parses the series with GEOparse and returns paths to expression
+        and metadata CSVs ready to use. This handles the common case (bulk
+        RNA-seq / microarray series with a VALUE column).
+     d. FALLBACK path: only if step (c) returns an "error" key or a shape
+        you can't use (e.g., supplementary-file-only data, multi-platform
+        splits, single-cell HDF5), write custom GEOparse code via
+        `run_python_for_data_prep`. GEOparse IS installed. Standard recipe:
+            import GEOparse
+            gse = GEOparse.get_GEO("GSE...", destdir=".", silent=True)
+            # then handle the series's specific structure as needed
+     e. If neither (c) nor (d) yields usable data, list the GSE accessions
+        you tried in `attempted_online_queries` and continue to step 5.
+  5. If after both local and online attempts you cannot assemble suitable
+     data, return DataNotFound with a clear reason and a list of what you
+     tried.
 
 RULES:
   - When you finish successfully, the `file_path` MUST be an absolute path to a
@@ -113,7 +130,7 @@ def make_data_agent() -> Agent[ConvertorDeps, DataAgentOutput]:
 
     @agent.tool
     def run_python_for_data_prep(
-        ctx: RunContext[ConvertorDeps], code: str, timeout_s: int = 300
+        ctx: RunContext[ConvertorDeps], code: str, timeout_s: int = 600
     ) -> str:
         """Run a standalone Python script in a sandboxed subprocess.
 
@@ -124,6 +141,27 @@ def make_data_agent() -> Agent[ConvertorDeps, DataAgentOutput]:
         """
         return run_python_subprocess(
             code, workspace=ctx.deps.workspace_dir, timeout_s=timeout_s
+        )
+
+    @agent.tool
+    def download_geo_series_tool(
+        ctx: RunContext[ConvertorDeps], gse_id: str
+    ) -> str:
+        """Default fast path for fetching a GEO series.
+
+        Downloads + parses with GEOparse, saves expression + metadata CSVs to
+        the workspace. Returns JSON with expression_file, metadata_file,
+        n_features_x_n_samples, sample_metadata_columns, gse_title,
+        platform_ids. If the returned dict has an "error" key, fall back to
+        writing custom GEOparse code via run_python_for_data_prep.
+
+        Example: download_geo_series_tool("GSE5281")
+        """
+        import json
+
+        return json.dumps(
+            catalog.download_geo_series(gse_id, ctx.deps.workspace_dir),
+            indent=2,
         )
 
     @agent.tool
